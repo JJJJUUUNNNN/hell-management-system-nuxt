@@ -53,9 +53,7 @@ export const menuOptions: MenuOption[] = [
           h(
             NuxtLink,
             {
-              to: {
-                path: "lifeDeathBookUserManage",
-              },
+              to: "/lifeDeathBook/userManage",
             },
             () => "用户管理"
           ),
@@ -66,9 +64,7 @@ export const menuOptions: MenuOption[] = [
           h(
             NuxtLink,
             {
-              to: {
-                path: "lifeDeathBookDataManage",
-              },
+              to: "/lifeDeathBook/dataManage",
             },
             () => "数据同步"
           ),
@@ -86,9 +82,7 @@ export const menuOptions: MenuOption[] = [
           h(
             NuxtLink,
             {
-              to: {
-                path: "seductiveManageManager",
-              },
+              to: "/seductiveManage/seductiveManager",
             },
             () => "勾魂使者"
           ),
@@ -99,9 +93,7 @@ export const menuOptions: MenuOption[] = [
           h(
             NuxtLink,
             {
-              to: {
-                path: "seductiveManageData",
-              },
+              to: "/seductiveManage/seductiveData",
             },
             () => "勾魂数据"
           ),
@@ -119,9 +111,7 @@ export const menuOptions: MenuOption[] = [
           h(
             NuxtLink,
             {
-              to: {
-                path: "hellTrialTen",
-              },
+              to: "/hellTrial/tenPalace",
             },
             () => "十殿"
           ),
@@ -132,9 +122,7 @@ export const menuOptions: MenuOption[] = [
           h(
             NuxtLink,
             {
-              to: {
-                path: "hellTrialHistory",
-              },
+              to: "/hellTrial/trialHistory",
             },
             () => "审判记录"
           ),
@@ -145,9 +133,7 @@ export const menuOptions: MenuOption[] = [
           h(
             NuxtLink,
             {
-              to: {
-                path: "hellTrialData",
-              },
+              to: "/hellTrial/trialData",
             },
             () => "数据同步"
           ),
@@ -165,9 +151,7 @@ export const menuOptions: MenuOption[] = [
           h(
             NuxtLink,
             {
-              to: {
-                path: "eighteenHellDeviceManage",
-              },
+              to: "/eighteenHell/deviceManage",
             },
             () => "设备管理"
           ),
@@ -178,9 +162,7 @@ export const menuOptions: MenuOption[] = [
           h(
             NuxtLink,
             {
-              to: {
-                path: "eighteenHellWorkProcess",
-              },
+              to: "/eighteenHell/workProcess",
             },
             () => "作业流程"
           ),
@@ -191,9 +173,7 @@ export const menuOptions: MenuOption[] = [
           h(
             NuxtLink,
             {
-              to: {
-                path: "eighteenHellData",
-              },
+              to: "/eighteenHell/hellData",
             },
             () => "地狱数据"
           ),
@@ -211,9 +191,7 @@ export const menuOptions: MenuOption[] = [
           h(
             NuxtLink,
             {
-              to: {
-                path: "reincarnationDisk",
-              },
+              to: "/reincarnation/reincarnationDisk",
             },
             () => "轮回盘"
           ),
@@ -224,9 +202,7 @@ export const menuOptions: MenuOption[] = [
           h(
             NuxtLink,
             {
-              to: {
-                path: "reincarnationHistory",
-              },
+              to: "/reincarnation/reincarnationHistory",
             },
             () => "轮回记录"
           ),
@@ -244,9 +220,7 @@ export const menuOptions: MenuOption[] = [
           h(
             NuxtLink,
             {
-              to: {
-                path: "moneyTransfer",
-              },
+              to: "/money/moneyTransfer",
             },
             () => "汇款"
           ),
@@ -257,9 +231,7 @@ export const menuOptions: MenuOption[] = [
           h(
             NuxtLink,
             {
-              to: {
-                path: "moneyManage",
-              },
+              to: "/money/moneyManage",
             },
             () => "汇款管理"
           ),
@@ -273,9 +245,7 @@ export const menuOptions: MenuOption[] = [
       h(
         NuxtLink,
         {
-          to: {
-            path: "logManage",
-          },
+          to: "/logManage",
         },
         () => "日志管理"
       ),
@@ -291,9 +261,7 @@ export const menuOptions: MenuOption[] = [
           h(
             NuxtLink,
             {
-              to: {
-                path: "roleManage",
-              },
+              to: "/rolePermission/roleManage",
             },
             () => "角色管理"
           ),
@@ -304,9 +272,7 @@ export const menuOptions: MenuOption[] = [
           h(
             NuxtLink,
             {
-              to: {
-                path: "permissionSetting",
-              },
+              to: "/rolePermission/permissionSetting",
             },
             () => "权限设置"
           ),
@@ -324,9 +290,7 @@ export const menuOptions: MenuOption[] = [
           h(
             NuxtLink,
             {
-              to: {
-                path: "systemManager",
-              },
+              to: "/systemManage/systemManager",
             },
             () => "管理员"
           ),
@@ -337,9 +301,7 @@ export const menuOptions: MenuOption[] = [
           h(
             NuxtLink,
             {
-              to: {
-                path: "systemSetting",
-              },
+              to: "/systemManage/systemSetting",
             },
             () => "系统设置"
           ),
