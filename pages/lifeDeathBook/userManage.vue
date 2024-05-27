@@ -1,5 +1,5 @@
 <template>
-  <div class="main">
+  <div class="m-20px">
     <div class="card">
       <n-form ref="formRef" :model="formData" label-placement="left">
         <n-flex>
@@ -24,7 +24,7 @@
             :disabled="formData.name === null"
             round
             type="primary"
-            @click="handleValidateButtonClick"
+            @click="getList"
           >
             搜索
           </n-button>
@@ -56,20 +56,6 @@ const formRef = ref();
 // const message = useMessage();
 const columns = computed(() => createColumns());
 
-const tableData = ref([
-  {
-    id: 1,
-    name: "张三",
-    age: 32,
-    time: "20240102",
-  },
-  {
-    id: 2,
-    name: "李四",
-    age: 32,
-    time: "20240102",
-  },
-]);
 const pagination = ref({
   pageSize: 5,
 });
@@ -105,18 +91,16 @@ function rowKey(row: any) {
 function handleCheck(rowKeys: any) {
   console.log("handleCheck", rowKeys);
 }
-</script>
 
-<style scoped>
-.main {
-  margin: 30px;
+const tableData: any = ref([]);
+
+function getList() {
+  $fetch("/api/userList").then((res) => {
+    if (res?.code == 0) {
+      tableData.value = res?.data;
+    }
+    console.log(res)
+  });
 }
-.main .card {
-  width: 100%;
-  background-color: #fff;
-  box-shadow: 0px 4px 10px 0px #e7eaf0;
-  border-radius: 6px 6px 6px 6px;
-  padding: 20px;
-  margin: 10px 0;
-}
-</style>
+getList();
+</script>
