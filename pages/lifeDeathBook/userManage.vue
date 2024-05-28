@@ -22,6 +22,7 @@
           </n-form-item>
           <n-button
             :disabled="formData.name === null"
+            :loading="searchLoading"
             round
             type="primary"
             @click="getList"
@@ -33,6 +34,7 @@
     </div>
     <div class="card">
       <n-data-table
+        :loading="searchLoading"
         :columns="columns"
         :data="tableData"
         :pagination="pagination"
@@ -44,8 +46,8 @@
 </template>
 
 <script setup lang="ts">
-// import { DataTableColumns, DataTableRowKey } from "naive-ui";
-// import { RowData } from "naive-ui/es/data-table/src/interface";
+import type { DataTableColumns, DataTableRowKey } from "naive-ui";
+import type { RowData } from "naive-ui/es/data-table/src/interface";
 
 const formData = ref({
   name: "",
@@ -60,47 +62,53 @@ const pagination = ref({
   pageSize: 5,
 });
 
-function handleValidateButtonClick(e: MouseEvent) {
-  e.preventDefault();
-}
-
-// function createColumns(): DataTableColumns<RowData> {
-function createColumns() {
+function createColumns(): DataTableColumns<RowData> {
   return [
     {
       type: "selection",
-      // disabled: (row: RowData) => row.name == "66",
-      disabled: (row: any) => row.name == "66",
+      disabled: (row: RowData) => row.name == "66",
     },
     {
       title: "姓名",
       key: "name",
     },
     {
-      title: "时间",
-      key: "time",
+      title: "年龄",
+      key: "age",
+    },
+    {
+      title: "出生日期",
+      key: "birthDate",
+    },
+    {
+      title: "死亡日期",
+      key: "deathDate",
     },
   ];
 }
 
-// function rowKey(row: RowData) {
-function rowKey(row: any) {
-  return row.id;
+function rowKey(row: RowData) {
+  return row._id;
 }
-// function handleCheck(rowKeys: DataTableRowKey[]) {
-function handleCheck(rowKeys: any) {
+function handleCheck(rowKeys: DataTableRowKey[]) {
   console.log("handleCheck", rowKeys);
 }
 
-const tableData: any = ref([]);
+const tableData = ref([]);
+const searchLoading = ref(false);
 
-function getList() {
-  $fetch("/api/userList").then((res) => {
-    if (res?.code == 0) {
-      tableData.value = res?.data;
-    }
-    console.log(res)
+async function getList() {
+  searchLoading.value = true;
+  const res = await $fetch("/api/userList", {
+    method: "post",
+    // body: { test: 123 },
   });
+  tableData.value = res?.data;
+  console.log("getList", res);
+
+  setTimeout(() => {
+    searchLoading.value = false;
+  }, 1000);
 }
 getList();
 </script>
