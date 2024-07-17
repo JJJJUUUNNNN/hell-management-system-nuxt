@@ -60,7 +60,7 @@
           :loading="searchLoading"
           round
           type="warning"
-          @click="showModal = true"
+          @click="createUser"
         >
           创建用户
         </n-button>
@@ -85,8 +85,56 @@
     @positive-click="handleAdd"
     @negative-click="showModal = false"
   >
-  <p>6666</p>
+    <p>6666</p>
   </n-modal>
+  <n-drawer
+    v-model:show="showDrawer"
+    placement="right"
+    :width="450"
+    resizable
+    :on-mask-click="() => (showDrawer = true)"
+  >
+    <n-drawer-content title="创建用户" closable>
+      <n-form
+        ref="formRef"
+        :label-width="80"
+        label-placement="left"
+        :model="userData"
+        :rules="userRules"
+      >
+          <n-form-item label="图片" path="image">
+            <n-upload
+              action="https://www.mocky.io/v2/5e4bafc63100007100d8b70f"
+              list-type="image-card"
+              @preview="handlePreview"
+              :default-file-list="userData.image"
+            />
+          </n-form-item>
+          <n-form-item label="姓名" path="name">
+            <n-input v-model:value="userData.name" placeholder="请输入姓名" />
+          </n-form-item>
+          <n-form-item label="年龄" path="age">
+            <n-input v-model:value="userData.age" placeholder="请输入年龄" />
+          </n-form-item>
+          <n-form-item label="出生日期" path="birthDate">
+            <n-date-picker class="w-100%" clearable v-model:formatted-value="userData.birthDate" value-format="yyyy-MM-dd" type="date" placeholder="请选择出生日期" />
+          </n-form-item>
+          <n-form-item label="死亡日期" path="deathDate">
+            <n-date-picker class="w-100%" clearable v-model:formatted-value="userData.deathDate" value-format="yyyy-MM-dd" type="date" placeholder="请选择死亡日期" />
+          </n-form-item>
+      </n-form>
+      <template #footer>
+        <n-flex>
+            <n-button @click="handleValidateClick" type="primary">
+              确定
+            </n-button>
+            <n-button @click="showDrawer = false" type="warning">
+              取消
+            </n-button>
+        </n-flex>
+      </template>
+    </n-drawer-content>
+  </n-drawer>
 </template>
 
 <script setup lang="ts">
@@ -94,6 +142,8 @@ import {
   NButton,
   NImage,
   useMessage,
+  type UploadFileInfo,
+  type FormItemRule,
   type DataTableColumns,
   type DataTableRowKey,
 } from "naive-ui";
@@ -120,6 +170,62 @@ const pagination = ref({
 });
 
 const showModal = ref(false);
+const showDrawer = ref(false);
+const userData = ref({
+  image: [],
+  name: "",
+  age: "",
+  birthDate: null,
+  deathDate: null,
+});
+
+const userRules = ref({
+  image: {
+    required: true,
+    trigger: ["change"],
+    message: "请上传图片",
+  },
+  name: {
+    required: true,
+    trigger: ["blur", "input"],
+    message: "请输入姓名",
+  },
+  age: {
+    required: true,
+    trigger: ["blur", "input"],
+    message: "请输入年龄",
+  },
+  birthDate: {
+    required: true,
+    trigger: ["blur", "change"],
+    message: "请选择出生日期",
+  },
+  deathDate: {
+    required: true,
+    trigger: ["blur", "change"],
+    message: "请选择死亡日期",
+  },
+});
+
+function createUser() {
+  showDrawer.value = true;
+}
+
+function handleValidateClick(e: MouseEvent) {
+  e.preventDefault();
+  const messageReactive = message.loading("Verifying", {
+    duration: 0,
+  });
+  formRef.value?.validate((errors: any) => {
+    if (!errors) {
+      message.success("Valid");
+    } else {
+      message.error("Invalid");
+      console.log("errors", errors);
+    }
+    messageReactive.destroy();
+  });
+}
 
 function createColumns(): DataTableColumns<RowData> {
   return [
@@ -186,16 +292,18 @@ function handleCheck(rowKeys: DataTableRowKey[]) {
   console.log("handleCheck", rowKeys);
 }
 
-const tableData = ref([]);
+const tableData = ref<Array<Object>>([]);
 const searchLoading = ref(false);
 
 async function getList() {
   searchLoading.value = true;
-  const res = await $fetch("/api/userList", {
+  const res:Array<Object> = await $fetch("/api/userList", {
     method: "post",
     body: formData.value,
   });
-  tableData.value = res.data;
+  if(res){
+    tableData.value = res;
+  }
   console.log("getList", res);
 
   setTimeout(() => {
@@ -207,8 +315,8 @@ getList();
 function handleReset() {
   formData.value = {
     name: "",
-    birthDate: null,
-    deathDate: null,
+    // birthDate: null,
+    // deathDate: null,
   };
   getList();
 }
@@ -223,4 +331,10 @@ function handleAdd() {
 function handleDelete(row: any) {
   console.log("移除", row);
 }
+
+const previewImageUrlRef = ref('')
+function handlePreview (file: UploadFileInfo) {
+      const { url } = file
+      previewImageUrlRef.value = url as string
+    }
 </script>
