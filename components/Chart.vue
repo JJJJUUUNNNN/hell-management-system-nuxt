@@ -1,5 +1,5 @@
 <template>
-  <div class="chart" :id="id"></div>
+  <div class="w-100% h-100" :id="id"></div>
 </template>
 
 <script setup lang="ts">
@@ -37,8 +37,5 @@ onMounted(() => {
 </script>
 
 <style scoped>
-.chart {
-  width: 100%;
-  height: 400px;
-}
+/* */
 </style>

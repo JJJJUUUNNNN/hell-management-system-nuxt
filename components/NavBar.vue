@@ -10,9 +10,7 @@
     </n-flex>
     <div class="operator">
       <n-flex justify="space-between" align="center">
-        <div class="icon-sys icon"></div>
-        <div class="icon-msg icon"></div>
-        <div class="icon-tasks icon"></div>
+        <div v-for="item in operatorList" :key="item.className" :class="`w-5 h-5 cursor-pointer ${item.className}`"></div>
         <n-dropdown :options="options" @select="handleSelect">
           <n-avatar
             class="avatar"
@@ -23,7 +21,6 @@
         </n-dropdown>
       </n-flex>
     </div>
-    <NIcon />
   </n-flex>
 </template>
 
@@ -89,15 +86,23 @@ function logout() {
   // userStore.logout();
   // router.replace("/");
 }
+const operatorList = [
+  {
+    name:'系统信息',
+    className: 'icon-sys'
+  },
+  {
+    name:'消息管理',
+    className: 'icon-msg'
+  },
+  {
+    name:'任务列表',
+    className: 'icon-tasks'
+  },
+]
 </script>
 
 <style scoped>
-.icon {
-  width: 19px;
-  height: 19px;
-  cursor: pointer;
-}
-
 .icon-sys {
   background: url(~/assets/images/icon-sys-gray.png) no-repeat center center;
   background-size: cover;
