@@ -190,10 +190,10 @@ function handleValidateClick(e: MouseEvent) {
   });
   formRef.value?.validate(async (errors: any) => {
     if (!errors) {
-      const res: Array<Object> = updateType.value == 'add' ? await $fetch("/api/userList/add", {
+      const res: Array<Object> = updateType.value == 'add' ? await $fetch("/api/lifeDeathBook/userManage/add", {
         method: "post",
         body: userData.value,
-      }) : await $fetch("/api/userList/update", {
+      }) : await $fetch("/api/lifeDeathBook/userManage/update", {
         method: "post",
         body: userData.value,
       });
@@ -281,7 +281,7 @@ const searchLoading = ref(false);
 
 async function getList() {
   searchLoading.value = true;
-  const res: Array<Object> = await $fetch("/api/userList", {
+  const res: Array<Object> = await $fetch("/api/lifeDeathBook/userManage", {
     method: "post",
     body: formData.value,
   });
@@ -312,7 +312,7 @@ function showDele(row: any) {
   delInfo.value = row
 }
 async function handleDelete() {
-  await $fetch("/api/userList/del", {
+  await $fetch("/api/lifeDeathBook/userManage/del", {
     method: "post",
     body: { name: delInfo.value?.name },
   });
