@@ -1,9 +1,9 @@
-import { findSQL } from "~/server/api";
+import { updateSQL } from "~/server/api";
 
 export default defineEventHandler(async (event) => {
   const body = await readBody(event);
   try {
-    return await findSQL("user", body);
+    return await updateSQL("user", body);
   } catch (err: any) {
 
   }
