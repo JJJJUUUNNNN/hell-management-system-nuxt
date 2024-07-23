@@ -1,7 +1,7 @@
 <template>
   <div class="m-5">
     <div class="card">
-      <n-form ref="formRef" :model="formData" label-placement="left">
+      <n-form :model="formData" label-placement="left">
         <n-flex>
           <n-form-item path="name" label="姓名">
             <n-input v-model:value="formData.name" @keydown.enter.prevent placeholder="请输入姓名" clearable />
@@ -54,41 +54,8 @@
     @positive-click="handleDelete" @negative-click="showModal = false">
     <p>是否确定删除此条数据？</p>
   </n-modal>
-  <n-drawer v-model:show="showDrawer" placement="right" :width="450" resizable
-    :on-mask-click="() => (showDrawer = true)">
-    <n-drawer-content title="创建用户" closable>
-      <n-form ref="formRef" :label-width="80" label-placement="left" :model="userData" :rules="userRules">
-        <n-form-item label="图片" path="image">
-          <n-upload action="https://www.mocky.io/v2/5e4bafc63100007100d8b70f" list-type="image-card"
-            @preview="handlePreview" :default-file-list="userData.image" />
-        </n-form-item>
-        <n-form-item label="姓名" path="name">
-          <n-input v-model:value="userData.name" placeholder="请输入姓名" />
-        </n-form-item>
-        <n-form-item label="年龄" path="age">
-          <n-input v-model:value="userData.age" placeholder="请输入年龄" />
-        </n-form-item>
-        <n-form-item label="出生日期" path="birthDate">
-          <n-date-picker class="w-100%" clearable v-model:formatted-value="userData.birthDate" value-format="yyyy-MM-dd"
-            type="date" placeholder="请选择出生日期" />
-        </n-form-item>
-        <n-form-item label="死亡日期" path="deathDate">
-          <n-date-picker class="w-100%" clearable v-model:formatted-value="userData.deathDate" value-format="yyyy-MM-dd"
-            type="date" placeholder="请选择死亡日期" />
-        </n-form-item>
-      </n-form>
-      <template #footer>
-        <n-flex>
-          <n-button @click="handleValidateClick" type="primary">
-            确定
-          </n-button>
-          <n-button @click="showDrawer = false" type="warning">
-            取消
-          </n-button>
-        </n-flex>
-      </template>
-    </n-drawer-content>
-  </n-drawer>
+
+  <update v-model:visible="showDrawer" :updateType="updateType" :data="userData" @fetchList="getList" />
 </template>
 
 <script setup lang="ts">
@@ -96,13 +63,12 @@ import {
   NButton,
   NImage,
   useMessage,
-  type UploadFileInfo,
-  type FormItemRule,
   type DataTableColumns,
   type DataTableRowKey,
 } from "naive-ui";
 import type { Type } from "naive-ui/es/button/src/interface";
 import type { RowData } from "naive-ui/es/data-table/src/interface";
+import update from "./components/update.vue"
 
 interface QueryType {
   name?: any;
@@ -116,7 +82,7 @@ const formData = ref<QueryType>({
   // deathDate: null,
 });
 
-const formRef = ref();
+
 const message = useMessage();
 const columns = computed(() => createColumns());
 
@@ -126,41 +92,6 @@ const pagination = ref({
 
 const showModal = ref(false);
 const showDrawer = ref(false);
-const userData = ref({
-  image: ["https://img-test.fbzs.net/uploads/jpg/20240711/D9oqvH73c3yAMd0OgGTCnOiynx0QVs59v9313lWt.jpg"],
-  name: "",
-  age: "",
-  birthDate: null,
-  deathDate: null,
-});
-
-const userRules = ref({
-  // image: {
-  //   required: true,
-  //   trigger: ["change"],
-  //   message: "请上传图片",
-  // },
-  name: {
-    required: true,
-    trigger: ["blur", "input"],
-    message: "请输入姓名",
-  },
-  age: {
-    required: true,
-    trigger: ["blur", "input"],
-    message: "请输入年龄",
-  },
-  birthDate: {
-    required: true,
-    trigger: ["blur", "change"],
-    message: "请选择出生日期",
-  },
-  deathDate: {
-    required: true,
-    trigger: ["blur", "change"],
-    message: "请选择死亡日期",
-  },
-});
 
 const btnList = [
   {
@@ -176,35 +107,12 @@ const btnList = [
 ]
 
 const updateType = ref('')
+const userData = ref({})
 
 function updateUser(row: any, type: string) {
   showDrawer.value = true;
   updateType.value = type
   userData.value = row
-}
-
-function handleValidateClick(e: MouseEvent) {
-  e.preventDefault();
-  const messageReactive = message.loading("Verifying", {
-    duration: 0,
-  });
-  formRef.value?.validate(async (errors: any) => {
-    if (!errors) {
-      const res: Array<Object> = updateType.value == 'add' ? await $fetch("/api/lifeDeathBook/userManage/add", {
-        method: "post",
-        body: userData.value,
-      }) : await $fetch("/api/lifeDeathBook/userManage/update", {
-        method: "post",
-        body: userData.value,
-      });
-      message.success('操作成功')
-      getList()
-      showDrawer.value = false
-    } else {
-      message.error("Invalid");
-    }
-    messageReactive.destroy();
-  });
 }
 
 function createColumns(): DataTableColumns<RowData> {
@@ -320,9 +228,6 @@ async function handleDelete() {
   getList()
 }
 
-const previewImageUrlRef = ref('')
-function handlePreview(file: UploadFileInfo) {
-  const { url } = file
-  previewImageUrlRef.value = url as string
-}
+
+
 </script>
