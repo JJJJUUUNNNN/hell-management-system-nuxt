@@ -16,13 +16,14 @@
       <n-flex class="mb-5">
         <n-button>新增设备</n-button>
       </n-flex>
-      <n-data-table :columns="columns" :data="tableData" />
+      <n-data-table :loading="searchLoading" :columns="columns" :data="tableData" :pagination="pagination"
+        :row-key="rowKey" @update:checked-row-keys="handleCheck" />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { NButton, NImage, type DataTableColumns } from 'naive-ui';
+import { NButton, NImage, type DataTableColumns, type DataTableRowKey } from 'naive-ui';
 import type { Type } from 'naive-ui/es/button/src/interface';
 import type { RowData } from 'naive-ui/es/data-table/src/interface';
 
@@ -44,6 +45,18 @@ const btnList = [
     name: '编辑'
   }
 ]
+
+function rowKey(row: RowData) {
+  return row._id;
+}
+
+const pagination = ref({
+  pageSize: 5,
+});
+
+function handleCheck(rowKeys: DataTableRowKey[]) {
+  console.log("handleCheck", rowKeys);
+}
 
 const searchLoading = ref(false)
 const tableData = ref<Array<object>>([]);
